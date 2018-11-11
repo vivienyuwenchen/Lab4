@@ -87,8 +87,8 @@ module cpu
                     .WriteData(regDin_WB),
                     .ReadRegister1(RS_ID),
                     .ReadRegister2(RT_ID),
-                    .WriteRegister(regAw_ID),
-                    .RegWrite(RegWr_ID),
+                    .WriteRegister(regAw_WB),
+                    .RegWrite(RegWr_WB),
                     .Clk(clk));
 
     // ID/EX Register
@@ -122,46 +122,63 @@ module cpu
     mux2 #(32) muxshift2(.in0(jumpaddr),
                     .in1(branchaddr),
                     .sel(IsBranch),
-                    .out(shift2));
+                    .out(newaddr));
 
-    assign aluaddsum = PCplus4 + shift2;
+    assign PCplus4addr_EX = PCplus4 + newaddr;
+
+    mux2 #(32) muxisbranch(.in0(PCplus4),
+                    .in1(aluaddsum),
+                    .sel(IsBranch),
+                    .out(isbranchout));
+
+    mux2 #(32) muxisjump(.in0(isbranchout),
+                    .in1(shift2),
+                    .sel(IsJump),
+                    .out(isjumpout));
 
     // EX/MEM Register
     exmem #(32) exmemreg(.clk(clk),
                     .enable(1'b1),
-                    .d0(aluout_EX),
-                    .q0(aluout_MEM),
-                    .d1(regDb_EX),
-                    .q1(regDb_MEM),
-                    .d2(MemWr_EX),
-                    .q2(MemWr_MEM));
+                    .dR0(aluout_EX),
+                    .qR0(aluout_MEM),
+                    .dR1(regDb_EX),
+                    .qR1(regDb_MEM),
+                    .dR2(PCplus4addr_EX),
+                    .qR2(PCplus4addr_MEM),
+                    .dC0(MemToReg_EX),
+                    .qC0(MemToReg_MEM),
+                    .dC1(RegWr_EX),
+                    .qC1(RegWr_MEM)
+                    .dC2(MemWr_EX),
+                    .qC2(MemWr_MEM)
+                    .dC3(PCplus4addr_EX),
+                    .qC3(PCplus4addr_MEM));
 
     // memory mem(.clk(clk),
-    //                 .WrEn(MemWr),
+    //                 .WrEn(MemWr_MEM),
     //                 .DataAddr(aluout_MEM),
     //                 .DataIn(regDb_MEM),
     //                 .DataOut(memout_MEM),
     //                 .InstrAddr(PCcount_IF),
     //                 .Instruction(instruction_IF));
 
-    // EX/MEM Register
+    // MEM/WB Register
     memwb #(32) memwbreg(.clk(clk),
                     .enable(1'b1),
-                    .d0(memout_MEM),
-                    .q0(memout_WB),
-                    .d1(aluout_MEM),
-                    .q1(aluout_WB),
-                    .d2(MemToReg_EX),
-                    .q2(MemToReg_WB));
+                    .dR0(memout_MEM),
+                    .qR0(memout_WB),
+                    .dR1(aluout_MEM),
+                    .qR1(aluout_WB),
+                    .dR2(regAw_MEM),
+                    .qR2(regAw_WB),
+                    .dC0(MemToReg_MEM),
+                    .qC0(MemToReg_WB),
+                    .dC1(RegWr_MEM),
+                    .qC1(RegWr_WB));
 
     mux2 #(32) mem2reg(.in0(aluout_WB),
                     .in1(memout_WB),
                     .sel(MemToReg_WB),
-                    .out(mem2regout_WB));
-
-    mux2 #(32) isjaldin(.in0(mem2regout_WB),
-                    .in1(PCplus4_WB),
-                    .sel(IsJAL_WB),
                     .out(regDin_WB));
 
     // regfile register(.ReadData1(regDa_ID),
@@ -169,8 +186,8 @@ module cpu
     //                 .WriteData(regDin_WB),
     //                 .ReadRegister1(RS_ID),
     //                 .ReadRegister2(RT_ID),
-    //                 .WriteRegister(regAw_ID),
-    //                 .RegWrite(RegWr_ID),
+    //                 .WriteRegister(regAw_WB),
+    //                 .RegWrite(RegWr_WB),
     //                 .Clk(clk));
 
 endmodule

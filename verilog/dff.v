@@ -84,26 +84,26 @@ module exmem
 (
     input clk,
     input enable,
-    input [31:0] d0, d1;
-    input d2;
-    output [31:0] q0, q1;
-    output q2;
+    input [31:0] dR0, dR1;
+    input dC0;
+    output [31:0] qR0, qR1;
+    output qC0;
 );
 
-    dff #(32) dff0(.clk(clk),
+    dff #(32) dffR0(.clk(clk),
                     .enable(enable),
-                    .d(d0),
-                    .q(q0));
+                    .d(dR0),
+                    .q(qR0));
 
-    dff #(32) dff1(.clk(clk),
+    dff #(32) dffR1(.clk(clk),
                     .enable(enable),
-                    .d(d1),
-                    .q(q1));
+                    .d(dR1),
+                    .q(qR1));
 
-    dff #(1) dff2(.clk(clk),
+    dff #(1) dffC0(.clk(clk),
                     .enable(enable),
-                    .d(d2),
-                    .q(q2));
+                    .d(dC0),
+                    .q(qC0));
 
 endmodule
 
@@ -112,25 +112,35 @@ module memwb
 (
     input clk,
     input enable,
-    input [31:0] d0, d1;
-    input d2;
-    output [31:0] q0, q1;
-    output q2;
+    input [31:0] dR0, dR1, dR2;
+    input dC0, dC1;
+    output [31:0] qR0, qR1, qR2;
+    output qC0, qC1;
 );
 
-    dff #(32) dff0(.clk(clk),
+    dff #(32) dffR0(.clk(clk),
                     .enable(enable),
-                    .d(d0),
-                    .q(q0));
+                    .d(dR0),
+                    .q(qR0));
 
-    dff #(32) dff1(.clk(clk),
+    dff #(32) dffR1(.clk(clk),
                     .enable(enable),
-                    .d(d1),
-                    .q(q1));
+                    .d(dR1),
+                    .q(qR1));
 
-    dff #(1) dff2(.clk(clk),
+    dff #(32) dffR2(.clk(clk),
                     .enable(enable),
-                    .d(d2),
-                    .q(q2));
+                    .d(dR2),
+                    .q(qR2));
+
+    dff #(1) dffC0(.clk(clk),
+                    .enable(enable),
+                    .d(dC0),
+                    .q(qC0));
+
+    dff #(1) dffC1(.clk(clk),
+                    .enable(enable),
+                    .d(dC1),
+                    .q(qC1));
 
 endmodule
