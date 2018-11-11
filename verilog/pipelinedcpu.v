@@ -16,14 +16,17 @@ module cpu
 );
 
     // control wires
-    wire RegDst, RegWr, MemWr, MemToReg, ALUsrc, IsJump, IsJAL, IsJR, IsBranch;
-    wire [2:0] ALUctrl;
-    wire [31:0]      datain;
+    wire RegDst_ID, RegWr_ID, MemWr_ID, MemToReg_ID, ALUsrc_ID, IsJump_ID, IsJAL_ID, IsJR_ID, IsBranch_ID;
+    wire RegDst_EX, RegWr_EX, MemWr_EX, MemToReg_EX, ALUsrc_EX, IsJump_EX, IsBranch_EX;
+    wire RegWr_MEM, MemWr_MEM, MemToReg_MEM, IsJump_MEM, IsBranch_MEM;
+    wire RegWr_WB, MemToReg_WB;
+    wire [2:0] ALUctrl_ID, ALUctrl_EX;
     // decoder wires
     wire [5:0] OP_ID, FUNCT_ID;
     wire [4:0] RT_ID, RS_ID, RD_ID, SHAMT_ID;
-    wire [15:0] IMM16_ID;
-    wire [25:0] TA_ID;
+    wire [4:0] RT_EX, RD_EX;
+    wire [15:0] IMM16_ID, IMM16_EX;
+    wire [25:0] TA_ID, TA_EX;
     // IF wires
     wire [31:0] PCcount_IF, PCplus4_IF;
     wire [31:0] instruction_IF;
@@ -37,9 +40,19 @@ module cpu
     // WB wires
     wire wb;
 
+    mux2 #(32) muxisbranch(.in0(PCplus4_IF),
+                    .in1(PCplus4addr_MEM),
+                    .sel(IsBranch_MEM),
+                    .out(isbranchout_IF));
+
+    mux2 #(32) muxisjump(.in0(isbranchout_IF),
+                    .in1(shift2_MEM),
+                    .sel(IsJump_MEM),
+                    .out(isjumpout_IF));
+
     dff #(32) pccounter(.clk(clk),
                     .enable(1'b1),
-                    .d(isjrout),
+                    .d(isjumpout_IF),
                     .q(PCcount_IF));
 
     assign PCplus4_IF = PCcount_IF + 32'h00000004;
@@ -53,12 +66,12 @@ module cpu
                     .Instruction(instruction_IF));
 
     // IF/ID Register
-    ifid #(32) ifidreg(.clk(clk),
+    ifid ifidreg(.clk(clk),
                     .enable(1'b1),
-                    .d0(PCplus4_IF),
-                    .q0(PCplus4_ID),
-                    .d1(instruction_IF),
-                    .q1(instruction_ID));
+                    .dR0(PCplus4_IF),
+                    .qR0(PCplus4_ID),
+                    .dR1(instruction_IF),
+                    .qR1(instruction_ID));
 
     instructiondecoder decoder(.OP(OP_ID),
                     .RT(RT_ID),
@@ -66,21 +79,24 @@ module cpu
                     .RD(RD_ID),
                     .IMM16(IMM16_ID),
                     .TA(TA_ID),
-                    .SHAMT(SHAMT_ID),
+                    .SHAMT(SHAMT_ID),           // unused
                     .FUNCT(FUNCT_ID),
                     .instruction(instruction_ID));
 
-    assign SE_ID = {{16{IMM16_ID[15]}}, IMM16_ID};
-
-    mux2 #(5) regdst(.in0(RT_ID),
-                    .in1(RD_ID),
-                    .sel(RegDst_ID),
-                    .out(Rint_ID));
-
-    mux2 #(5) isjalaw(.in0(Rint),
-                    .in1(5'd31),
-                    .sel(IsJAL_ID),
-                    .out(regAw_ID));
+    instructionLUT lut(.OP(OP_ID),
+                    .FUNCT(FUNCT_ID),
+                    .zero(zero_MEM),
+                    .overflow(overflow_MEM),
+                    .RegDst(RegDst_ID),
+                    .RegWr(RegWr_ID),
+                    .MemWr(MemWr_ID),
+                    .MemToReg(MemToReg_ID),
+                    .ALUctrl(ALUctrl_ID),
+                    .ALUsrc(ALUsrc_ID),
+                    .IsJump(IsJump_ID),
+                    .IsJAL(IsJAL_ID),           // unused
+                    .IsJR(IsJR_ID),             // unused
+                    .IsBranch(IsBranch_ID));
 
     regfile register(.ReadData1(regDa_ID),
                     .ReadData2(regDb_ID),
@@ -91,24 +107,50 @@ module cpu
                     .RegWrite(RegWr_WB),
                     .Clk(clk));
 
+    assign SE_ID = {{16{IMM16_ID[15]}}, IMM16_ID};
+
     // ID/EX Register
     idex #(32) idexreg(.clk(clk),
                     .enable(1'b1),
-                    .d0(PCplus4_ID),
-                    .q0(PCplus4_EX),
-                    .d1(regDa_ID),
-                    .q1(regDa_EX),
-                    .d2(regDb_ID),
-                    .q2(regDb_EX),
-                    .d3(SE_ID),
-                    .q3(SE_EX));
+                    .dR0(regDa_ID),
+                    .qR0(regDa_EX),
+                    .dR1(regDb_ID),
+                    .qR1(regDb_EX),
+                    .dR2(PCplus4_ID),
+                    .qR2(PCplus4_EX),
+                    .dR3(SE_ID),
+                    .qR3(SE_EX),
+                    .dR4(RT_ID),
+                    .qR4(RT_EX),
+                    .dR5(RD_ID),
+                    .qR5(RD_EX),
+                    .dR6(TA_ID),
+                    .qR6(TA_EX),
+                    .dR7(IMM16_ID),
+                    .qR7(IMM16_EX),
+                    .dC0(MemToReg_ID),
+                    .qC0(MemToReg_EX),
+                    .dC1(RegWr_ID),
+                    .qC1(RegWr_EX)
+                    .dC2(MemWr_ID),
+                    .qC2(MemWr_EX)
+                    .dC3(IsBranch_ID),
+                    .qC3(IsBranch_EX),
+                    .dC4(IsJump_ID),
+                    .qC4(IsJump_EX),
+                    .dC5(ALUsrc_ID),
+                    .qC5(ALUsrc_EX),
+                    .dC6(RegDst_ID),
+                    .qC6(RegDst_EX)
+                    .dC10(ALUctrl_ID),
+                    .qC10(ALUctrl_EX));
 
     mux2 #(32) alusrc(.in0(regDb_EX),
                     .in1(SE_EX),
                     .sel(ALUsrc_EX),
                     .out(alusrcout_EX));
 
-    ALU alumain(.carryout(carryout_EX),
+    ALU alumain(.carryout(carryout_EX),         // unused
                     .zero(zero_EX),
                     .overflow(overflow_EX),
                     .result(aluout_EX),
@@ -116,43 +158,46 @@ module cpu
                     .operandB(alusrcout_EX),
                     .command(ALUctrl_EX));
 
-    assign jumpaddr = {PCplus4[31:28], TA, 2'b00};
-    assign branchaddr = {{14{IMM16[15]}}, IMM16, 2'b00};
+    assign jumpaddr_EX = {PCplus4_EX[31:28], TA_EX, 2'b00};
+    assign branchaddr_EX = {{14{IMM16_EX[15]}}, IMM16_EX, 2'b00};
 
-    mux2 #(32) muxshift2(.in0(jumpaddr),
-                    .in1(branchaddr),
-                    .sel(IsBranch),
-                    .out(newaddr));
+    mux2 #(32) muxshift2(.in0(jumpaddr_EX),
+                    .in1(branchaddr_EX),
+                    .sel(IsBranch_EX),
+                    .out(shift2_EX));
 
-    assign PCplus4addr_EX = PCplus4 + newaddr;
+    assign PCplus4addr_EX = PCplus4_EX + shift2_EX;
 
-    mux2 #(32) muxisbranch(.in0(PCplus4),
-                    .in1(aluaddsum),
-                    .sel(IsBranch),
-                    .out(isbranchout));
-
-    mux2 #(32) muxisjump(.in0(isbranchout),
-                    .in1(shift2),
-                    .sel(IsJump),
-                    .out(isjumpout));
+    mux2 #(5) muxregdst(.in0(RT_EX),
+                    .in1(RD_EX),
+                    .sel(RegDst_EX),
+                    .out(regAw_EX));
 
     // EX/MEM Register
     exmem #(32) exmemreg(.clk(clk),
                     .enable(1'b1),
-                    .dR0(aluout_EX),
-                    .qR0(aluout_MEM),
-                    .dR1(regDb_EX),
-                    .qR1(regDb_MEM),
-                    .dR2(PCplus4addr_EX),
-                    .qR2(PCplus4addr_MEM),
+                    .dR0(regAw_EX),
+                    .qR0(regAw_MEM),
+                    .dR1(aluout_EX),
+                    .qR1(aluout_MEM),
+                    .dR2(regDb_EX),
+                    .qR2(regDb_MEM),
+                    .dR3(PCplus4addr_EX),
+                    .qR3(PCplus4addr_MEM),
                     .dC0(MemToReg_EX),
                     .qC0(MemToReg_MEM),
                     .dC1(RegWr_EX),
                     .qC1(RegWr_MEM)
                     .dC2(MemWr_EX),
                     .qC2(MemWr_MEM)
-                    .dC3(PCplus4addr_EX),
-                    .qC3(PCplus4addr_MEM));
+                    .dC3(IsBranch_EX),
+                    .qC3(IsBranch_MEM),
+                    .dC4(IsJump_EX),
+                    .qC4(IsJump_MEM),
+                    .dF0(zero_EX),
+                    .qF0(zero_MEM),
+                    .dF1(overflow_EX),
+                    .dF1(overflow_MEM));
 
     // memory mem(.clk(clk),
     //                 .WrEn(MemWr_MEM),
@@ -165,12 +210,12 @@ module cpu
     // MEM/WB Register
     memwb #(32) memwbreg(.clk(clk),
                     .enable(1'b1),
-                    .dR0(memout_MEM),
-                    .qR0(memout_WB),
+                    .dR0(regAw_MEM),
+                    .qR0(regAw_WB),
                     .dR1(aluout_MEM),
                     .qR1(aluout_WB),
-                    .dR2(regAw_MEM),
-                    .qR2(regAw_WB),
+                    .dR2(memout_MEM),
+                    .qR2(memout_WB),
                     .dC0(MemToReg_MEM),
                     .qC0(MemToReg_WB),
                     .dC1(RegWr_MEM),
