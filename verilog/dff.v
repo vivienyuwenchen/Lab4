@@ -32,8 +32,8 @@ module ifid
 (
     input clk,
     input enable,
-    input [31:0] dR0, dR1;
-    output [31:0] qR0, qR1;
+    input [31:0] dR0, dR1,
+    output [31:0] qR0, qR1
 );
 
     dff #(32) dffR0(.clk(clk),
@@ -53,12 +53,12 @@ module idex
 (
     input clk,
     input enable,
-    input [31:0] dR0, dR1, dR2, dR3, dR4, dR5;
-    input dC0, dC1, dC2, dC3, dC4, dC5, dC6;
-    input [2:0] dC10;
-    output [31:0] qR0, qR1, qR2, qR3, qR4, qR5;
-    output qC0, qC1, qC2, qC3, qC4, qC5, qC6;
-    output [2:0] qC10;
+    input [31:0] dR0, dR1, dR2, dR3, dR4, dR5, dR6, dR7,
+    input dC0, dC1, dC2, dC3, dC4, dC5, dC6,
+    input [2:0] dC10,
+    output [31:0] qR0, qR1, qR2, qR3, qR4, qR5, qR6, qR7,
+    output qC0, qC1, qC2, qC3, qC4, qC5, qC6,
+    output [2:0] qC10
 );
 
     dff #(32) dffR0(.clk(clk),
@@ -90,6 +90,16 @@ module idex
                     .enable(enable),
                     .d(dR5),
                     .q(qR5));
+
+    dff #(32) dffR6(.clk(clk),
+                    .enable(enable),
+                    .d(dR6),
+                    .q(qR6));
+
+    dff #(32) dffR7(.clk(clk),
+                    .enable(enable),
+                    .d(dR7),
+                    .q(qR7));
 
     dff #(1) dffC0(.clk(clk),
                     .enable(enable),
@@ -138,12 +148,14 @@ module exmem
 (
     input clk,
     input enable,
-    input [31:0] dR0, dR1, dR2, dR3;
-    input dC0, dC1, dC2, dC3, dC4;
-    input dF0, dF1;
-    output [31:0] qR0, qR1, qR2, qR3;
-    output qC0, qC1, qC2, qC3, qC4;
-    output qF0, qF1;
+    input [31:0] dR0, dR1, dR2, dR3,    // registers
+    input [4:0] dA0,                    // addresses
+    input dC0, dC1, dC2, dC3, dC4,      // controls
+    input dF0, dF1,                     // flags
+    output [31:0] qR0, qR1, qR2, qR3,   // registers
+    output [4:0] qA0,                   // addresses
+    output qC0, qC1, qC2, qC3, qC4,     // controls
+    output qF0, qF1                     // flags
 );
 
     dff #(32) dffR0(.clk(clk),
@@ -165,6 +177,11 @@ module exmem
                     .enable(enable),
                     .d(dR3),
                     .q(qR3));
+
+    dff #(5) dffA0(.clk(clk),
+                    .enable(enable),
+                    .d(dA0),
+                    .q(qA0));
 
     dff #(1) dffC0(.clk(clk),
                     .enable(enable),
@@ -208,10 +225,12 @@ module memwb
 (
     input clk,
     input enable,
-    input [31:0] dR0, dR1, dR2;
-    input dC0, dC1;
-    output [31:0] qR0, qR1, qR2;
-    output qC0, qC1;
+    input [31:0] dR0, dR1,
+    input [4:0] dA0,                    // addresses
+    input dC0, dC1,
+    output [31:0] qR0, qR1,
+    output [4:0] qA0,                   // addresses
+    output qC0, qC1
 );
 
     dff #(32) dffR0(.clk(clk),
@@ -224,10 +243,10 @@ module memwb
                     .d(dR1),
                     .q(qR1));
 
-    dff #(32) dffR2(.clk(clk),
+    dff #(5) dffA0(.clk(clk),
                     .enable(enable),
-                    .d(dR2),
-                    .q(qR2));
+                    .d(dA0),
+                    .q(qA0));
 
     dff #(1) dffC0(.clk(clk),
                     .enable(enable),
