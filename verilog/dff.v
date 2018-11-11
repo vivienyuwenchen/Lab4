@@ -53,10 +53,16 @@ module idex
 (
     input clk,
     input enable,
-    input [31:0] dR0, dR1, dR2, dR3, dR4, dR5, dR6, dR7,
+    input [31:0] dR0, dR1, dR2, dR3,
+    input [4:0] dR4, dR5,
+    input [25:0] dR6,
+    input [15:0] dR7,
     input dC0, dC1, dC2, dC3, dC4, dC5, dC6,
     input [2:0] dC10,
-    output [31:0] qR0, qR1, qR2, qR3, qR4, qR5, qR6, qR7,
+    output [31:0] qR0, qR1, qR2, qR3,
+    output [4:0] qR4, qR5,
+    output [25:0] qR6,
+    output [15:0] qR7,
     output qC0, qC1, qC2, qC3, qC4, qC5, qC6,
     output [2:0] qC10
 );
@@ -81,22 +87,22 @@ module idex
                     .d(dR3),
                     .q(qR3));
 
-    dff #(32) dffR4(.clk(clk),
+    dff #(5) dffR4(.clk(clk),
                     .enable(enable),
                     .d(dR4),
                     .q(qR4));
 
-    dff #(32) dffR5(.clk(clk),
+    dff #(5) dffR5(.clk(clk),
                     .enable(enable),
                     .d(dR5),
                     .q(qR5));
 
-    dff #(32) dffR6(.clk(clk),
+    dff #(26) dffR6(.clk(clk),
                     .enable(enable),
                     .d(dR6),
                     .q(qR6));
 
-    dff #(32) dffR7(.clk(clk),
+    dff #(16) dffR7(.clk(clk),
                     .enable(enable),
                     .d(dR7),
                     .q(qR7));
