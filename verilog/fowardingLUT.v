@@ -11,20 +11,6 @@
 //Companion reading chapter 4.7 pg 370
 //------------------------------------------------------------------------
 
-`define opLW    6'b100011
-`define opSW    6'b101011
-`define opJ     6'b000010
-`define opJR    6'b001000 //FUNCT, OP = 6'b000000
-`define opJAL   6'b000011
-`define opBEQ   6'b000100
-`define opBNE   6'b000101
-`define opXORI  6'b001110
-`define opADDI  6'b001000
-`define opADD   6'b100000 //FUNCT, OP = 6'b000000
-`define opSUB   6'b100010 //FUNCT, OP = 6'b000000
-`define opSLT   6'b101010 //FUNCT, OP = 6'b000000
-`define Rtype   6'b000000
-
 module fowardingLUT
 (
     input [31:0] ex_rs,
@@ -37,11 +23,11 @@ module fowardingLUT
     input       mem_regWrite,
     input       wb_regWrite,
     output [1:0] fowardA,
-    output [1:0] fowardB,
+    output [1:0] fowardB
 
 );
 
-  if(mem_regWrite && (mem_regRd != 0) begin:
+  if(mem_regWrite && (mem_regRd != 0)) begin:
       if (mem_regRd == ex_rs) begin:
         fowardA = 2'b10;
         end
