@@ -7,13 +7,26 @@ addi $t4, $zero, 10
 
 addi $t5, $zero, 8
 addi $t6, $zero, -2
-sw $ra, $t1
-beq $t1, $t5, BRANCH 
+
+addi  $sp, $sp, -8
+sw    $ra, 4($sp)
+sw    $s0, 0($sp)
+beq $t1, $t5, BRANCHEQ
 add $t2, $t1, $t2
-addi $t2, $t2, $t3
-addi  $t2, $t2, $t4
-subi $t0, $t3, $t4
+add $t2, $t2, $t3
+sub $t0, $t3, $t4
+xor $t0, $t1, $t5
 slt $t0, $t5, $t6
 
-BRANCH:
-lw $ra, $t1
+BRANCHEQ:
+lw    $s0, 0($sp)
+lw    $ra, 4($sp)
+addi  $sp, $sp, 8
+bne $t1, $t5, BRANCHNE
+
+add $t2, $t2, $t3
+sub $t2, $t2, $t4
+
+BRANCHNE:
+xori $t0, $t1, 8
+slt $t0, $t5, $t6

@@ -8,6 +8,6 @@ addi $t4, $zero, 10
 addi $t5, $zero, 8
 addi $t6, $zero, -2
 
-addi $t0, $t1, $t2
-subi $t0, $t3, $t4
+xori $t1, $t1, 2
+sub  $t4, $t4, $t2,
 slt $t0, $t5, $t6
