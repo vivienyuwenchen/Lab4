@@ -31,7 +31,7 @@ module cpu_test ();
   	reset = 1; #10;
   	reset = 0; #10;
 
-    #7670
+    #82450
     if(cpu.register.RegisterOutput[8] != 32'h1 || cpu.register.RegisterOutput[9] != 32'h3 || cpu.register.RegisterOutput[10] != 32'h2 || cpu.register.RegisterOutput[11] != 32'h3 || cpu.register.RegisterOutput[12] != 32'h2 || cpu.register.RegisterOutput[13] != 32'h5|| cpu.register.RegisterOutput[14] != 32'h6 ) begin// || cpu.register.RegisterOutput[4] != 32'hb || cpu.register.RegisterOutput[8] != 32'hb || cpu.register.RegisterOutput[9] != 32'h37)
           $display("----------------------------------------");
           $display("FAILED PIPELINE ALU TEST");
