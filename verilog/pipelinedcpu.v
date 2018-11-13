@@ -206,12 +206,11 @@ module cpu
 
     forwardingLUT forwardingLUT(.ex_rs(RS_EX),
                     .ex_rt(RT_EX),
-                    .mem_regRd(RD_MEM),
-                    .wb_regRd(RD_WB),
-                    .rs(RS_ID),
-                    .rt(RT_ID),
+                    .mem_regAw(regAw_MEM),
+                    .wb_regAw(regAw_WB),
                     .mem_regWrite(RegWr_MEM),
                     .wb_regWrite(RegWr_WB),
+                    .clk(clk),
                     .forwardA(forwardA_EX),
                     .forwardB(forwardB_EX));
 

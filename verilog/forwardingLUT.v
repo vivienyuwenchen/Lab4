@@ -15,19 +15,18 @@ module forwardingLUT
 (
     input [4:0] ex_rs,
     input [4:0] ex_rt,
-    input [4:0] mem_regRd,
-    input [4:0] wb_regRd,
-    input [4:0] rs,
-    input [4:0] rt,
+    input [4:0] mem_regAw,
+    input [4:0] wb_regAw,
     input       mem_regWrite,
     input       wb_regWrite,
+    input clk,
     output reg [1:0] forwardA,
     output reg [1:0] forwardB
 
 );
 
-always @(*) begin
-  if(mem_regWrite && (mem_regRd != 0)) begin
+always @(negedge clk) begin
+  if((mem_regWrite) && (mem_regRd != 0)) begin
       if (mem_regRd == ex_rs) begin
           forwardA = 2'b10;
       end
