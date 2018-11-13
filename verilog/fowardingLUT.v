@@ -27,21 +27,21 @@ module fowardingLUT
 
 );
 
-  if(mem_regWrite && (mem_regRd != 0)) begin:
-      if (mem_regRd == ex_rs) begin:
+  if(mem_regWrite && (mem_regRd != 0)) begin
+      if (mem_regRd == ex_rs) begin
         fowardA = 2'b10;
         end
 
-      if (mem_regRd == ex_rt) begin:
+      if (mem_regRd == ex_rt) begin
         fowardB = 2'b10;
         end
   end
-  else if(wb_regWrite && (wb_regRd != 0) begin:
-      if ((!(mem_regWrite && (mem_regRd != 0))) begin:
-          if((mem_regRd != ex_rs) && (wb_regRd == ex_rs)) begin:
+  else if(wb_regWrite && (wb_regRd != 0)) begin
+      if ((!(mem_regWrite && (mem_regRd != 0))) begin
+          if((mem_regRd != ex_rs) && (wb_regRd == ex_rs)) begin
             forwardA = 2'b01;
           end
-          if ((mem_regRd != ex_rt) && (wb_regRd == ex_rs)) begin:
+          if ((mem_regRd != ex_rt) && (wb_regRd == ex_rs)) begin
             forwardB = 2'b01;
           end
       end
