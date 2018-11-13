@@ -6,6 +6,7 @@
 `include "memory.v"
 `include "dff.v"
 `include "mux.v"
+`include "mux4.v"
 `include "alu.v"
 `include "instructiondecoder.v"
 `include "lut.v"
@@ -50,6 +51,7 @@ module cpu
     wire [31:0] alusrcout_EX;
     wire [31:0] jumpaddr_EX, branchaddr_EX;
     wire [1:0] forwardA_EX, forwardB_EX;
+    wire [31:0] operandA_EX, operandB_EX;
     // WB exclusive wires
     wire [31:0] regDin_WB;
 
@@ -165,12 +167,26 @@ module cpu
                     .sel(ALUsrc_EX),
                     .out(alusrcout_EX));
 
+    mux4 #(32) fwdA(.in0(regDa_EX),
+                    .in1(regDin_WB),
+                    .in2(aluout_MEM),
+                    .in3(32'h00000000),
+                    .sel(forwardA_EX),
+                    .out(operandA_EX));
+
+    mux4 #(32) fwdB(.in0(alusrcout_EX),
+                    .in1(regDin_WB),
+                    .in2(aluout_MEM),
+                    .in3(32'h00000000),
+                    .sel(forwardB_EX),
+                    .out(operandB_EX));
+
     ALU alumain(.carryout(carryout_EX),         // unused
                     .zero(zero_EX),
                     .overflow(overflow_EX),
                     .result(aluout_EX),
-                    .operandA(regDa_EX),
-                    .operandB(alusrcout_EX),
+                    .operandA(operandA_EX),
+                    .operandB(operandB_EX),
                     .command(ALUctrl_EX));
 
     assign jumpaddr_EX = {PCplus4_EX[31:28], TA_EX, 2'b00};
