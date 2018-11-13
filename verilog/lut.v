@@ -34,7 +34,7 @@ module instructionLUT
     output reg  IsBranch
 );
 
-    always @(OP or FUNCT or zero or overflow) begin
+    always @(*) begin
         case(OP)
             `opLW: begin
                 RegDst = 0;
@@ -189,12 +189,32 @@ module instructionLUT
                         IsBranch = 0;
                     end // opSLT
                     default: begin
-                        $display("ERROR: Invalid operation or function code.");
+                        //$display("ERROR: Invalid operation or function code.");
+                        RegDst = 0;
+                        RegWr = 0;
+                        MemWr = 0;
+                        MemToReg = 0;
+                        ALUctrl = 3'b000;
+                        ALUsrc = 0;
+                        IsJump = 0;
+                        IsJAL = 0;
+                        IsJR = 0;
+                        IsBranch = 0;
                     end
                 endcase // case(FUNCT)
             end // Rtype
             default: begin
-                $display("ERROR: Invalid operation or function code.");
+                //$display("ERROR: Invalid operation or function code.");
+                RegDst = 0;
+                RegWr = 0;
+                MemWr = 0;
+                MemToReg = 0;
+                ALUctrl = 3'b000;
+                ALUsrc = 0;
+                IsJump = 0;
+                IsJAL = 0;
+                IsJR = 0;
+                IsBranch = 0;
             end
         endcase // case(OP)
     end // always
