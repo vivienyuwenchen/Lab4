@@ -26,24 +26,24 @@ module forwardingLUT
 );
 
 always @(negedge clk) begin
-  if((mem_regWrite) && (mem_regRd != 0)) begin
-      if (mem_regRd == ex_rs) begin
+  if((mem_regWrite) && (mem_regAw != 0)) begin
+      if (mem_regAw == ex_rs) begin
           forwardA = 2'b10;
       end
 
-      if (mem_regRd == ex_rt) begin
+      if (mem_regAw == ex_rt) begin
           forwardB = 2'b10;
       end
   end
 
-  else if(wb_regWrite && (wb_regRd != 0)) begin
-      if ((!(mem_regWrite && (mem_regRd != 0)))) begin
+  else if(wb_regWrite && (wb_regAw != 0)) begin
+      if ((!(mem_regWrite && (mem_regAw != 0)))) begin
 
-          if((mem_regRd != ex_rs) && (wb_regRd == ex_rs)) begin
+          if((mem_regAw != ex_rs) && (wb_regAw == ex_rs)) begin
               forwardA = 2'b01;
           end
 
-          if ((mem_regRd != ex_rt) && (wb_regRd == ex_rs)) begin
+          if ((mem_regAw != ex_rt) && (wb_regAw == ex_rs)) begin
               forwardB = 2'b01;
           end
 
