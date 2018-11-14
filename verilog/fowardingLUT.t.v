@@ -46,7 +46,7 @@ module testfowardinglut();
             $display("error with test:2 forwardB; Expected: 01, Got: %d", forwardB);
 
         // Test 3: 
-        $display("Testing 2...");
+        $display("Testing 3...");
         ex_rs=5'b10011; ex_rt=5'b10001; mem_regRd=5'b00000; 
         wb_regRd=5'b10011; rs=5'b10011; rt=5'b10011; 
         mem_regWrite=0; wb_regWrite=0; #1000
@@ -57,6 +57,6 @@ module testfowardinglut();
 
 
 
-
+        $display("Done Testing");
     end
 endmodule // testfowardinglut
