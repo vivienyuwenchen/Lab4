@@ -42,43 +42,5 @@ else if((wb_regWrite && (wb_regAw != 0)) && ((mem_regAw != ex_rt) && (wb_regAw =
 else
     forwardB = 2'b00;
 end
-/*
-  if((mem_regWrite) && (mem_regAw != 0)) begin
-      if (mem_regAw != ex_rs) begin
-          forwardA = 2'b00;
-      end
-      else
-        forwardA = 2'b10;
 
-      if (mem_regAw != ex_rt) begin
-          forwardB = 2'b00;
-      end
-      else
-        forwardB = 2'b10;
-  end
-
-  else if(wb_regWrite && (wb_regAw != 0)) begin
-      //if ((!(mem_regWrite && (mem_regAw != 0)))) begin
-          //if((mem_regAw != ex_rs) && (wb_regAw == ex_rs)) begin
-          if (wb_regAw == ex_rs) begin
-              forwardA = 2'b01;
-          end
-          else
-            forwardA = 2'b00;
-
-          if ((mem_regAw != ex_rt) && (wb_regAw == ex_rt)) begin
-              forwardB = 2'b01;
-          end
-          else
-            forward= 2'b00;
-
-      //end
-  end
-
-  else begin
-      forwardA = 2'b00;
-      forwardB = 2'b00;
-  end
-end
-*/
 endmodule
