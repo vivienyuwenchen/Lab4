@@ -161,24 +161,6 @@ module cpu_h
                     .out6(RegDst_ID_F),
                     .in7(ALUctrl_ID),
                     .out7(ALUctrl_ID_F));
-                    // .inR0(regDa_ID),
-                    // .outR0(regDa_ID_F),
-                    // .inR1(regDb_ID),
-                    // .outR1(regDb_ID_F),
-                    // .inR2(PCplus4_ID),
-                    // .outR2(PCplus4_ID_F),
-                    // .inR3(SE_ID),
-                    // .outR3(SE_ID_F),
-                    // .inR4(RS_ID),
-                    // .outR4(RS_ID_F),
-                    // .inR5(RT_ID),
-                    // .outR5(RT_ID_F),
-                    // .inR6(RD_ID),
-                    // .outR6(RD_ID_F),
-                    // .inR7(TA_ID),
-                    // .outR7(TA_ID_F),
-                    // .inR8(IMM16_ID),
-                    // .outR8(IMM16_ID_F)
 
     // ID/EX Register
     idex idexreg(.clk(clk),
@@ -201,22 +183,6 @@ module cpu_h
                     .qR7(TA_EX),
                     .dR8(IMM16_ID),
                     .qR8(IMM16_EX),
-                    // .dC0(MemToReg_ID),
-                    // .qC0(MemToReg_EX_F),
-                    // .dC1(RegWr_ID),
-                    // .qC1(RegWr_EX_F),
-                    // .dC2(MemWr_ID),
-                    // .qC2(MemWr_EX_F),
-                    // .dC3(IsBranch_ID),
-                    // .qC3(IsBranch_EX_F),
-                    // .dC4(IsJump_ID),
-                    // .qC4(IsJump_EX_F),
-                    // .dC5(ALUsrc_ID),
-                    // .qC5(ALUsrc_EX_F),
-                    // .dC6(RegDst_ID),
-                    // .qC6(RegDst_EX_F),
-                    // .dC10(ALUctrl_ID),
-                    // .qC10(ALUctrl_EX_F));
                     .dC0(MemToReg_ID_F),
                     .qC0(MemToReg_EX),
                     .dC1(RegWr_ID_F),
@@ -233,24 +199,6 @@ module cpu_h
                     .qC6(RegDst_EX),
                     .dC10(ALUctrl_ID_F),
                     .qC10(ALUctrl_EX));
-
-    // flushmux flush(.sel(FlushE),
-    //                 .in0(MemToReg_EX_F),
-    //                 .out0(MemToReg_EX),
-    //                 .in1(RegWr_EX_F),
-    //                 .out1(RegWr_EX),
-    //                 .in2(MemWr_EX_F),
-    //                 .out2(MemWr_EX),
-    //                 .in3(IsBranch_EX_F),
-    //                 .out3(IsBranch_EX),
-    //                 .in4(IsJump_EX_F),
-    //                 .out4(IsJump_EX),
-    //                 .in5(ALUsrc_EX_F),
-    //                 .out5(ALUsrc_EX),
-    //                 .in6(RegDst_EX_F),
-    //                 .out6(RegDst_EX),
-    //                 .in7(ALUctrl_EX_F),
-    //                 .out7(ALUctrl_EX));
 
     mux2 #(32) alusrc(.in0(regDb_EX),
                     .in1(SE_EX),
@@ -334,14 +282,6 @@ module cpu_h
                     .dF1(overflow_EX),
                     .qF1(overflow_MEM));
 
-    // memory mem(.clk(clk),
-    //                 .WrEn(MemWr_MEM),
-    //                 .DataAddr(aluout_MEM),
-    //                 .DataIn(regDb_MEM),
-    //                 .DataOut(memout_MEM),
-    //                 .InstrAddr(PCcount_IF),
-    //                 .Instruction(instruction_IF));
-
     // MEM/WB Register
     memwb memwbreg(.clk(clk),
                     .enable(1'b1),
@@ -362,14 +302,5 @@ module cpu_h
                     .in1(memout_WB),
                     .sel(MemToReg_WB),
                     .out(regDin_WB));
-
-    // regfile register(.ReadData1(regDa_ID),
-    //                 .ReadData2(regDb_ID),
-    //                 .WriteData(regDin_WB),
-    //                 .ReadRegister1(RS_ID),
-    //                 .ReadRegister2(RT_ID),
-    //                 .WriteRegister(regAw_WB),
-    //                 .RegWrite(RegWr_WB),
-    //                 .Clk(clk));
 
 endmodule
