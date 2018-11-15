@@ -6,9 +6,11 @@
 `include "memory.v"
 `include "dff.v"
 `include "mux.v"
+`include "mux4.v"
 `include "alu.v"
 `include "instructiondecoder.v"
 `include "lut.v"
+`include "forwardingLUT.v"
 
 module cpu
 (
@@ -23,8 +25,8 @@ module cpu
     wire [2:0] ALUctrl_ID, ALUctrl_EX;
     // decoder wires
     wire [5:0] OP_ID, FUNCT_ID;
-    wire [4:0] RT_ID, RS_ID, RD_ID, SHAMT_ID;
-    wire [4:0] RT_EX, RD_EX;
+    wire [4:0] RS_ID, RT_ID, RD_ID, SHAMT_ID;
+    wire [4:0] RS_EX, RT_EX, RD_EX, RD_MEM, RD_WB;
     wire [15:0] IMM16_ID, IMM16_EX;
     wire [25:0] TA_ID, TA_EX;
     wire [31:0] SE_ID, SE_EX;
@@ -48,6 +50,8 @@ module cpu
     // EX exclusive wires
     wire [31:0] alusrcout_EX;
     wire [31:0] jumpaddr_EX, branchaddr_EX;
+    wire [1:0] forwardA_EX, forwardB_EX;
+    wire [31:0] operandA_EX, operandB_EX;
     // WB exclusive wires
     wire [31:0] regDin_WB;
 
@@ -131,14 +135,16 @@ module cpu
                     .qR2(PCplus4_EX),
                     .dR3(SE_ID),
                     .qR3(SE_EX),
-                    .dR4(RT_ID),
-                    .qR4(RT_EX),
-                    .dR5(RD_ID),
-                    .qR5(RD_EX),
-                    .dR6(TA_ID),
-                    .qR6(TA_EX),
-                    .dR7(IMM16_ID),
-                    .qR7(IMM16_EX),
+                    .dR4(RS_ID),
+                    .qR4(RS_EX),
+                    .dR5(RT_ID),
+                    .qR5(RT_EX),
+                    .dR6(RD_ID),
+                    .qR6(RD_EX),
+                    .dR7(TA_ID),
+                    .qR7(TA_EX),
+                    .dR8(IMM16_ID),
+                    .qR8(IMM16_EX),
                     .dC0(MemToReg_ID),
                     .qC0(MemToReg_EX),
                     .dC1(RegWr_ID),
@@ -161,12 +167,26 @@ module cpu
                     .sel(ALUsrc_EX),
                     .out(alusrcout_EX));
 
+    mux4 #(32) fwdA(.in0(regDa_EX),
+                    .in1(regDin_WB),
+                    .in2(aluout_MEM),
+                    .in3(32'h00000000),
+                    .sel(forwardA_EX),
+                    .out(operandA_EX));
+
+    mux4 #(32) fwdB(.in0(alusrcout_EX),
+                    .in1(regDin_WB),
+                    .in2(aluout_MEM),
+                    .in3(32'h00000000),
+                    .sel(forwardB_EX),
+                    .out(operandB_EX));
+
     ALU alumain(.carryout(carryout_EX),         // unused
                     .zero(zero_EX),
                     .overflow(overflow_EX),
                     .result(aluout_EX),
-                    .operandA(regDa_EX),
-                    .operandB(alusrcout_EX),
+                    .operandA(operandA_EX),
+                    .operandB(operandB_EX),
                     .command(ALUctrl_EX));
 
     assign jumpaddr_EX = {PCplus4_EX[31:28], TA_EX, 2'b00};
@@ -184,6 +204,16 @@ module cpu
                     .sel(RegDst_EX),
                     .out(regAw_EX));
 
+    forwardingLUT forwardingLUT(.ex_rs(RS_EX),
+                    .ex_rt(RT_EX),
+                    .mem_regAw(regAw_MEM),
+                    .wb_regAw(regAw_WB),
+                    .mem_regWrite(RegWr_MEM),
+                    .wb_regWrite(RegWr_WB),
+                    .clk(clk),
+                    .forwardA(forwardA_EX),
+                    .forwardB(forwardB_EX));
+
     // EX/MEM Register
     exmem exmemreg(.clk(clk),
                     .enable(1'b1),
@@ -195,6 +225,8 @@ module cpu
                     .qR2(PCplus4addr_MEM),
                     .dR3(shift2_EX),
                     .qR3(shift2_MEM),
+                    .dR4(RD_EX),
+                    .qR4(RD_MEM),
                     .dA0(regAw_EX),
                     .qA0(regAw_MEM),
                     .dC0(MemToReg_EX),
@@ -227,6 +259,8 @@ module cpu
                     .qR0(aluout_WB),
                     .dR1(memout_MEM),
                     .qR1(memout_WB),
+                    .dR2(RD_MEM),
+                    .qR2(RD_WB),
                     .dA0(regAw_MEM),
                     .qA0(regAw_WB),
                     .dC0(MemToReg_MEM),

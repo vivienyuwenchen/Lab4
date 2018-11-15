@@ -11,8 +11,9 @@
 `include "instructiondecoder.v"
 `include "lut.v"
 `include "forwardingLUT.v"
+`include "lwhazard.v"
 
-module cpu
+module cpu_h
 (
     input clk
 );
@@ -55,6 +56,9 @@ module cpu
     // WB exclusive wires
     wire [31:0] regDin_WB;
 
+    //Stall wires
+    wire StallF, StallD, FlushE;
+
     mux2 #(32) muxisbranch(.in0(PCplus4_IF),
                     .in1(PCplus4addr_MEM),
                     .sel(IsBranch_MEM),
@@ -66,7 +70,7 @@ module cpu
                     .out(isjumpout_IF));
 
     dff #(32) pccounter(.clk(clk),
-                    .enable(1'b1),
+                    .enable(StallF),
                     .d(isjumpout_IF),
                     .q(PCcount_IF));
 
@@ -80,9 +84,19 @@ module cpu
                     .InstrAddr(PCcount_IF),
                     .Instruction(instruction_IF));
 
+    lwHazard lwhaz(.ex_rs(RS_EX),
+                  .ex_rt(RS_EX),
+                  .id_rs(RS_ID),
+                  .id_rt(RT_ID),
+                  .clk(clk),
+                  .MemToReg_EX(MemToReg_EX),
+                  .StallF(StallF),
+                  .StallD(StallD),
+                  .FlushE(FlushE));
+
     // IF/ID Register
     ifid ifidreg(.clk(clk),
-                    .enable(1'b1),
+                    .enable(StallD),
                     .dR0(PCplus4_IF),
                     .qR0(PCplus4_ID),
                     .dR1(instruction_IF),
