@@ -1,4 +1,4 @@
-`include "pipelinedcpu.v"
+`include "backup.v"
 
 //------------------------------------------------------------------------
 // Test bench for XOR SUB SLT sequence.
@@ -21,7 +21,7 @@ module cpu_test ();
 
     initial begin
 
-    $readmemh("../asm/dat/forwarding.dat", cpu.mem.mem,0);
+    $readmemh("../asm/dat/forwrding_3.dat", cpu.mem.mem,0);
 
   	$dumpfile("cpu_alu.vcd");
   	$dumpvars();

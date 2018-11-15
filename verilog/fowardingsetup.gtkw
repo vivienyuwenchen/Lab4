@@ -1,0 +1,138 @@
+[*]
+[*] GTKWave Analyzer v3.3.94 (w)1999-2018 BSI
+[*] Thu Nov 15 03:24:08 2018
+[*]
+[dumpfile] "/home/comparch/Documents/CompArch/Lab4/verilog/cpu_alu.vcd"
+[dumpfile_mtime] "Thu Nov 15 03:14:33 2018"
+[dumpfile_size] 365982
+[savefile] "/home/comparch/Documents/CompArch/Lab4/verilog/fowardingsetup.gtkw"
+[timestart] 100
+[size] 1689 948
+[pos] -1 -23
+*-4.000000 150 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] cpu_test.
+[treeopen] cpu_test.cpu.
+[treeopen] cpu_test.cpu.register.genblk1[10].
+[treeopen] cpu_test.cpu.register.genblk1[11].
+[treeopen] cpu_test.cpu.register.genblk1[12].
+[treeopen] cpu_test.cpu.register.genblk1[13].
+[treeopen] cpu_test.cpu.register.genblk1[14].
+[treeopen] cpu_test.cpu.register.genblk1[15].
+[treeopen] cpu_test.cpu.register.genblk1[9].
+[treeopen] flushmux.
+[sst_width] 225
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 282
+@28
+cpu_test.cpu.clk
+@200
+-PC COUNTER
+@22
+cpu_test.cpu.pccounter.q[31:0]
+@200
+-Instruction
+@4022
+^>1 /usr/local/bin/mips-dasm-filter
+cpu_test.cpu.decoder.instruction[31:0]
+@2022
+^1 /home/comparch/Documents/CompArch/Lab4/filters/mips-regs.filter
+cpu_test.cpu.decoder.RS[4:0]
+^1 /home/comparch/Documents/CompArch/Lab4/filters/mips-regs.filter
+cpu_test.cpu.decoder.RT[4:0]
+^1 /home/comparch/Documents/CompArch/Lab4/filters/mips-regs.filter
+cpu_test.cpu.decoder.RD[4:0]
+@200
+-FowardingA
+@22
+cpu_test.cpu.fwdA.in0[31:0]
+cpu_test.cpu.fwdA.in1[31:0]
+cpu_test.cpu.fwdA.in2[31:0]
+cpu_test.cpu.fwdA.in3[31:0]
+cpu_test.cpu.fwdA.out[31:0]
+@28
+cpu_test.cpu.fwdA.sel[1:0]
+@200
+-FowardingB
+@22
+cpu_test.cpu.fwdB.in0[31:0]
+cpu_test.cpu.fwdB.in1[31:0]
+cpu_test.cpu.fwdB.in2[31:0]
+cpu_test.cpu.fwdB.in3[31:0]
+cpu_test.cpu.fwdB.out[31:0]
+@28
+cpu_test.cpu.fwdB.sel[1:0]
+@200
+-FowardingLUT
+@2022
+^1 /home/comparch/Documents/CompArch/Lab4/filters/mips-regs.filter
+cpu_test.cpu.forwardingLUT.ex_rs[4:0]
+^1 /home/comparch/Documents/CompArch/Lab4/filters/mips-regs.filter
+cpu_test.cpu.forwardingLUT.ex_rt[4:0]
+^1 /home/comparch/Documents/CompArch/Lab4/filters/mips-regs.filter
+cpu_test.cpu.forwardingLUT.mem_regAw[4:0]
+@28
+cpu_test.cpu.forwardingLUT.mem_regWrite
+@2022
+^1 /home/comparch/Documents/CompArch/Lab4/filters/mips-regs.filter
+cpu_test.cpu.forwardingLUT.wb_regAw[4:0]
+@28
+cpu_test.cpu.forwardingLUT.wb_regWrite
+cpu_test.cpu.forwardingLUT.forwardA[1:0]
+cpu_test.cpu.forwardingLUT.forwardB[1:0]
+@200
+-ALU
+@22
+cpu_test.cpu.alumain.operandA[31:0]
+cpu_test.cpu.alumain.operandB[31:0]
+@23
+cpu_test.cpu.alumain.result[31:0]
+@200
+-Registers
+@22
++{$t1$} cpu_test.cpu.register.genblk1[9].register.q[31:0]
++{$t2$} cpu_test.cpu.register.genblk1[10].register.q[31:0]
++{$t3$} cpu_test.cpu.register.genblk1[11].register.q[31:0]
++{$t4$} cpu_test.cpu.register.genblk1[12].register.q[31:0]
+@c00022
++{$t5$} cpu_test.cpu.register.genblk1[13].register.q[31:0]
+@28
+(0)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(1)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(2)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(3)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(4)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(5)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(6)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(7)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(8)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(9)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(10)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(11)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(12)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(13)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(14)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(15)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(16)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(17)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(18)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(19)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(20)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(21)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(22)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(23)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(24)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(25)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(26)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(27)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(28)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(29)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(30)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+(31)cpu_test.cpu.register.genblk1[13].register.q[31:0]
+@1401200
+-group_end
+@22
++{$t6$} cpu_test.cpu.register.genblk1[14].register.q[31:0]
++{$t7$} cpu_test.cpu.register.genblk1[15].register.q[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
