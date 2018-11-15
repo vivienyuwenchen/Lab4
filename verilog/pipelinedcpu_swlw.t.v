@@ -1,4 +1,4 @@
-`include "pipelinedcpu.v"
+`include "piplinedcpu_hazards.v"
 
 //------------------------------------------------------------------------
 // Test bench for XOR SUB SLT sequence.
@@ -17,11 +17,11 @@ module cpu_test ();
     always #10 clk = !clk;
 
     // Instantiate CPU
-    cpu cpu(.clk(clk));
+    cpu_h cpu(.clk(clk));
 
     initial begin
 
-    $readmemh("../asm/dat/load_store_test.dat", cpu.mem.mem,0);
+    $readmemh("../asm/dat/LWHazard.dat", cpu.mem.mem,0);
 
   	$dumpfile("cpu_alu.vcd");
   	$dumpvars();

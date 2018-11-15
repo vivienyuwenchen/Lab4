@@ -21,7 +21,7 @@ module cpu_test ();
 
     initial begin
 
-    $readmemh("../asm/dat/forwarding2.dat", cpu.mem.mem,0);
+    $readmemh("../asm/dat/forwarding.dat", cpu.mem.mem,0);
 
   	$dumpfile("cpu_alu.vcd");
   	$dumpvars();
