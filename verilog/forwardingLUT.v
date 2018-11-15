@@ -25,7 +25,7 @@ module forwardingLUT
 
 );
 
-always @(negedge clk) begin
+always @(posedge clk) begin
   if((mem_regWrite) && (mem_regAw != 0)) begin
       if (mem_regAw == ex_rs) begin
           forwardA = 2'b10;
