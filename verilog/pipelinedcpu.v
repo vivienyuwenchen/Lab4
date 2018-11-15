@@ -43,7 +43,7 @@ module cpu_h
     wire [31:0] shift2_EX, shift2_MEM;
     wire [31:0] aluout_EX, aluout_MEM, aluout_WB;
     wire [31:0] regDa_ID, regDa_EX;
-    wire [31:0] regDb_ID, regDb_EX, regDb_MEM;
+    wire [31:0] regDb_ID, regDb_EX;
     wire [4:0] regAw_EX, regAw_MEM, regAw_WB;
     wire [31:0] memout_MEM, memout_WB;
     wire [31:0] instruction_IF, instruction_ID;
@@ -51,7 +51,7 @@ module cpu_h
     wire [31:0] isbranchout_IF, isjumpout_IF;
     wire [31:0] PCcount_IF;
     // EX exclusive wires
-    wire [31:0] alusrcout_EX;
+    wire [31:0] fwdBout_EX, fwdBout_MEM;
     wire [31:0] jumpaddr_EX, branchaddr_EX;
     wire [1:0] forwardA_EX, forwardB_EX;
     wire [31:0] operandA_EX, operandB_EX;
@@ -85,7 +85,7 @@ module cpu_h
     memory mem(.clk(clk),
                     .WrEn(MemWr_MEM),
                     .DataAddr(aluout_MEM),
-                    .DataIn(regDb_MEM),
+                    .DataIn(fwdBout_MEM),
                     .DataOut(memout_MEM),
                     .InstrAddr(PCcount_IF),
                     .Instruction(instruction_IF));
@@ -200,11 +200,6 @@ module cpu_h
                     .dC10(ALUctrl_ID_F),
                     .qC10(ALUctrl_EX));
 
-    mux2 #(32) alusrc(.in0(regDb_EX),
-                    .in1(SE_EX),
-                    .sel(ALUsrc_EX),
-                    .out(alusrcout_EX));
-
     mux4 #(32) fwdA(.in0(regDa_EX),
                     .in1(regDin_WB),
                     .in2(aluout_MEM),
@@ -212,11 +207,16 @@ module cpu_h
                     .sel(forwardA_EX),
                     .out(operandA_EX));
 
-    mux4 #(32) fwdB(.in0(alusrcout_EX), //
+    mux4 #(32) fwdB(.in0(regDb_EX),
                     .in1(regDin_WB),
                     .in2(aluout_MEM),
                     .in3(32'h00000000),
                     .sel(forwardB_EX),
+                    .out(fwdBout_EX));
+
+    mux2 #(32) alusrc(.in0(fwdBout_EX),
+                    .in1(SE_EX),
+                    .sel(ALUsrc_EX),
                     .out(operandB_EX));
 
     ALU alumain(.carryout(carryout_EX),         // unused
@@ -257,8 +257,8 @@ module cpu_h
                     .enable(1'b1),
                     .dR0(aluout_EX),
                     .qR0(aluout_MEM),
-                    .dR1(regDb_EX),
-                    .qR1(regDb_MEM),
+                    .dR1(fwdBout_EX),
+                    .qR1(fwdBout_MEM),
                     .dR2(PCplus4addr_EX),
                     .qR2(PCplus4addr_MEM),
                     .dR3(shift2_EX),
