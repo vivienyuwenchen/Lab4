@@ -43,7 +43,7 @@ always @(negedge clk) begin
               forwardA = 2'b01;
           end
 
-          if ((mem_regAw != ex_rt) && (wb_regAw == ex_rs)) begin
+          if ((mem_regAw != ex_rt) && (wb_regAw == ex_rt)) begin
               forwardB = 2'b01;
           end
 
