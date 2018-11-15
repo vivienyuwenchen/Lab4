@@ -264,7 +264,7 @@ module cpu_h
                     .sel(forwardA_EX),
                     .out(operandA_EX));
 
-    mux4 #(32) fwdB(.in0(alusrcout_EX),
+    mux4 #(32) fwdB(.in0(alusrcout_EX), //
                     .in1(regDin_WB),
                     .in2(aluout_MEM),
                     .in3(32'h00000000),
