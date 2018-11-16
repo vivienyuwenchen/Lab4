@@ -27,7 +27,7 @@ module lwHazard
 );
     reg lwstall;
 
-always @(negedge clk) begin
+always @(*) begin
     lwstall = (((id_rs == ex_rt) || (id_rt == ex_rt)) && MemToReg_EX);
     StallF = !(lwstall);
     StallD = !(lwstall);
