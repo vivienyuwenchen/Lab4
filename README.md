@@ -1,5 +1,12 @@
 # CompArch Lab 4: Pipelined CPU
 
+## How To Run:
+
+```shell
+$ cd verilog
+$ make run
+```
+
 ## CPU Option:
 We will be pursuing a pipelined CPU. This will implement the modules we created for our single cycle CPU. Most importantly we want to focus on the pipeline functionality and the deliberate structure of our organization and clean, efficient scripting (quality Makefiles). We felt like we learned how to do this for the last lab but we truly want to implement these learnings here.
 ### Intended Deliverables:
@@ -18,7 +25,7 @@ We will be pursuing a pipelined CPU. This will implement the modules we created 
 
 
 ## WORK PLAN:
-Based on Lab 3’s work plan reflection we found that we often underestimated how long it would take us to debug. In this work plan we are more realistic in the “fixing and debugging” steps, allowing us the time we need to actually find problems and implement changes. By breaking down each task into smaller tasks we are able to think more critically about how much time we think each lab component will take us. 
+Based on Lab 3’s work plan reflection we found that we often underestimated how long it would take us to debug. In this work plan we are more realistic in the “fixing and debugging” steps, allowing us the time we need to actually find problems and implement changes. By breaking down each task into smaller tasks we are able to think more critically about how much time we think each lab component will take us.
 
 *  Pipelined CPU schematic (3 hours) DUE WEDNESDAY 11/7
 *  Written Lookup table (1 hour) DUE WEDNESDAY 11/7
