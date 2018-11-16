@@ -1,4 +1,4 @@
-`include "backup.v"
+`include "pipelinedcpu.v"
 
 //------------------------------------------------------------------------
 // Test bench for FOWARDING test sequence
@@ -22,7 +22,7 @@ module cpu_test ();
 
     $readmemh("../asm/dat/branching.dat", cpu.mem.mem,0);
 
-  	$dumpfile("cpu_alu.vcd");
+  	$dumpfile("cpu_swlw.vcd");
   	$dumpvars();
 
   	// Assert reset pulse

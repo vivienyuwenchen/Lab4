@@ -189,7 +189,6 @@ module instructionLUT
                         IsBranch = 0;
                     end // opSLT
                     default: begin
-                        //$display("ERROR: Invalid operation or function code.");
                         RegDst = 0;
                         RegWr = 0;
                         MemWr = 0;
@@ -204,7 +203,6 @@ module instructionLUT
                 endcase // case(FUNCT)
             end // Rtype
             default: begin
-                //$display("ERROR: Invalid operation or function code.");
                 RegDst = 0;
                 RegWr = 0;
                 MemWr = 0;

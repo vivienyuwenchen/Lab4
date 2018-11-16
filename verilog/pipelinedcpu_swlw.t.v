@@ -1,9 +1,9 @@
 `include "pipelinedcpu.v"
 
 //------------------------------------------------------------------------
-// Test bench for XOR SUB SLT sequence.
-// instructions were generated from xor_sub_slt.asm
-// This test bench test the ADDI, XORI, SUB, SLT, BNE, J functionality
+// Test bench for SW and LW
+// instructions were generated from LWHazard.asm
+// This test bench tests the SW, LW, ADDI, ADD, SUB functionality
 // outputs are found at verious registers including
 //------------------------------------------------------------------------
 

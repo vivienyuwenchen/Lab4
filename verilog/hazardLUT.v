@@ -65,7 +65,6 @@ module instructionLUT
                     end
 
                     default: begin
-                        //$display("ERROR: Invalid operation or function code.");
                         pcEnable = 1;
                         controlLUT0 = 1;
                         if_Idreg = 1;
@@ -73,7 +72,6 @@ module instructionLUT
                 endcase // case(FUNCT)
             end // Rtype
             default: begin
-                //$display("ERROR: Invalid operation or function code.");
                 pcEnable = 1;
                 controlLUT0 = 1;
                 if_Idreg = 1;

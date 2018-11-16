@@ -13,7 +13,7 @@
 `include "forwardingLUT.v"
 `include "lwhazard.v"
 
-module cpu_h
+module cpu
 (
     input clk
 );
@@ -22,7 +22,6 @@ module cpu_h
     wire RegDst_ID, RegWr_ID, MemWr_ID, MemToReg_ID, ALUsrc_ID, IsJump_ID, IsJAL_ID, IsJR_ID, IsBranch_ID;
     wire RegDst_ID_F, RegWr_ID_F, MemWr_ID_F, MemToReg_ID_F, ALUsrc_ID_F, IsJump_ID_F, IsBranch_ID_F;
     wire RegDst_EX, RegWr_EX, MemWr_EX, MemToReg_EX, ALUsrc_EX, IsJump_EX, IsBranch_EX;
-    wire RegDst_EX_F, RegWr_EX_F, MemWr_EX_F, MemToReg_EX_F, ALUsrc_EX_F, IsJump_EX_F, IsBranch_EX_F;
     wire RegWr_MEM, MemWr_MEM, MemToReg_MEM, IsJump_MEM, IsBranch_MEM;
     wire RegWr_WB, MemToReg_WB;
     wire [2:0] ALUctrl_ID, ALUctrl_ID_F, ALUctrl_EX, ALUctrl_EX_F;
@@ -60,10 +59,7 @@ module cpu_h
 
     //Stall wires
     wire StallF, StallD, FlushE;
-    wire [31:0] regDa_ID_F, regDb_ID_F, PCplus4_ID_F, SE_ID_F;
-    wire [4:0] RS_ID_F, RT_ID_F, RD_ID_F;
-    wire [25:0] TA_ID_F;
-    wire [15:0] IMM16_ID_F;
+    wire IsBranch_ID_Haz;
 
     mux2 #(32) muxisbranch(.in0(PCplus4_IF),
                     .in1(PCplus4addr_MEM),
@@ -96,9 +92,17 @@ module cpu_h
                   .id_rt(RT_ID),
                   .clk(clk),
                   .MemToReg_EX(MemToReg_EX),
+                  .MemToReg_MEM(MemToReg_MEM),
+                  .IsBranch_ID(IsBranch_ID),
+                  .RegWr_EX(RegWr_EX),
+                  .regAw_EX(regAw_EX),
+                  .regAw_MEM(regAw_MEM),
+                  .regDa_ID(regDa_ID),
+                  .regDb_ID(regDb_ID),
                   .StallF(StallF),
                   .StallD(StallD),
-                  .FlushE(FlushE));
+                  .FlushE(FlushE),
+                  .IsBranch_ID_Haz(IsBranch_ID_Haz));
 
     // IF/ID Register
     ifid ifidreg(.clk(clk),
@@ -151,7 +155,7 @@ module cpu_h
                     .out1(RegWr_ID_F),
                     .in2(MemWr_ID),
                     .out2(MemWr_ID_F),
-                    .in3(IsBranch_ID),
+                    .in3(IsBranch_ID_Haz),
                     .out3(IsBranch_ID_F),
                     .in4(IsJump_ID),
                     .out4(IsJump_ID_F),
