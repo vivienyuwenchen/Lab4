@@ -6,7 +6,6 @@
 `include "memory.v"
 `include "dff.v"
 `include "mux.v"
-`include "mux4.v"
 `include "alu.v"
 `include "instructiondecoder.v"
 `include "lut.v"
