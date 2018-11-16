@@ -1,0 +1,85 @@
+[*]
+[*] GTKWave Analyzer v3.3.94 (w)1999-2018 BSI
+[*] Fri Nov 16 02:03:47 2018
+[*]
+[dumpfile] "/home/comparch/CompArch_HW/Lab4/verilog/cpu_swlw.vcd"
+[dumpfile_mtime] "Fri Nov 16 01:56:47 2018"
+[dumpfile_size] 403057
+[savefile] "/home/comparch/CompArch_HW/Lab4/verilog/hazardssetup.gtkw"
+[timestart] 75
+[size] 1855 901
+[pos] -1 -1
+*-5.000000 177 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] cpu_test.
+[treeopen] cpu_test.cpu.
+[treeopen] cpu_test.cpu.register.
+[treeopen] cpu_test.cpu.register.genblk1[10].
+[treeopen] cpu_test.cpu.register.genblk1[11].
+[treeopen] cpu_test.cpu.register.genblk1[12].
+[treeopen] cpu_test.cpu.register.genblk1[13].
+[treeopen] cpu_test.cpu.register.genblk1[16].
+[treeopen] cpu_test.cpu.register.genblk1[1].
+[treeopen] cpu_test.cpu.register.genblk1[29].
+[treeopen] cpu_test.cpu.register.genblk1[4].
+[treeopen] cpu_test.cpu.register.genblk1[8].
+[treeopen] cpu_test.cpu.register.genblk1[9].
+[sst_width] 225
+[signals_width] 318
+[sst_expanded] 1
+[sst_vpaned_height] 284
+@28
+cpu_test.cpu.pccounter.clk
+@4022
+^>1 /usr/local/bin/mips-dasm-filter
++{instr(ID)} cpu_test.cpu.ifidreg.qR1[31:0]
+@28
+cpu_test.cpu.forwardingLUT.forwardA[1:0]
+@22
+cpu_test.cpu.fwdA.out[31:0]
+@28
+cpu_test.cpu.forwardingLUT.forwardB[1:0]
+@22
+cpu_test.cpu.fwdB.out[31:0]
++{memout} cpu_test.cpu.mem.DataOut[31:0]
++{memin} cpu_test.cpu.mem.DataIn[31:0]
+@28
+cpu_test.cpu.mem.WrEn
+cpu_test.cpu.lwhaz.FlushE
+cpu_test.cpu.lwhaz.StallD
+cpu_test.cpu.lwhaz.StallF
+@420
++{a0} cpu_test.cpu.register.genblk1[4].register.q[31:0]
++{t0} cpu_test.cpu.register.genblk1[8].register.q[31:0]
++{t1} cpu_test.cpu.register.genblk1[9].register.q[31:0]
++{t2} cpu_test.cpu.register.genblk1[10].register.q[31:0]
+@28
+cpu_test.cpu.lwhaz.branchstall
+cpu_test.cpu.lwhaz.IsBranch_ID_Haz
+cpu_test.cpu.lut.IsBranch
+@23
+cpu_test.cpu.register.ReadData1[31:0]
+@22
+cpu_test.cpu.register.ReadData2[31:0]
+@420
++{t3} cpu_test.cpu.register.genblk1[11].register.q[31:0]
++{t4} cpu_test.cpu.register.genblk1[12].register.q[31:0]
++{t5} cpu_test.cpu.register.genblk1[13].register.q[31:0]
++{s0} cpu_test.cpu.register.genblk1[16].register.q[31:0]
++{sp} cpu_test.cpu.register.genblk1[29].register.q[31:0]
++{Da(ID)} cpu_test.cpu.idexreg.dR0[31:0]
+cpu_test.cpu.alumain.operandA[31:0]
++{SE(ID)} cpu_test.cpu.idexreg.dR3[31:0]
+cpu_test.cpu.alumain.operandB[31:0]
+cpu_test.cpu.alumain.result[31:0]
+@22
++{pccount} cpu_test.cpu.pccounter.q[31:0]
+@28
+cpu_test.cpu.pccounter.enable
+cpu_test.cpu.idexreg.dC10[2:0]
+@4022
+^>1 /usr/local/bin/mips-dasm-filter
+cpu_test.cpu.ifidreg.qR1[31:0]
+^>1 /usr/local/bin/mips-dasm-filter
++{instr(IF)} cpu_test.cpu.mem.Instruction[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

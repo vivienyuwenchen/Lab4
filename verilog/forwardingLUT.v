@@ -38,7 +38,7 @@ else
 if((mem_regWrite) && (mem_regAw !=0) && (mem_regAw == ex_rt))
     forwardB = 2'b10;
 else if((wb_regWrite && (wb_regAw != 0)) && ((mem_regAw != ex_rt) && (wb_regAw == ex_rt)))
-        forwardB = 2'b01;
+    forwardB = 2'b01;
 else
     forwardB = 2'b00;
 end

@@ -30,7 +30,7 @@ module testMemory();
         $display("--------------------------------------------------");
         $display("Memory tests starting...");
 
-        $readmemh("./dat/addN.dat", mem.mem, 0);
+        $readmemh("../asm/dat/addN.dat", mem.mem, 0);
 
         // Instruction memory and data memory output tests
         InstrAddr = 32'h0; DataAddr = 32'h0; #1000

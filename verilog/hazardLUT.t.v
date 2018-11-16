@@ -107,6 +107,7 @@ module testhazardlut();
             $display("error with test7:ADD if_Idreg; Expected: 1, Got: %d", if_Idreg);
 
 
-        $display("Testing Complete");
+        $display("Hazard LUT tests done!!");
+        $display("--------------------------------------------------");
     end
-endmodule // testfowardinglut
+endmodule
