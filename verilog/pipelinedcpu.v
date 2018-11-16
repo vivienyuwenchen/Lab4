@@ -59,7 +59,6 @@ module cpu
 
     //Stall wires
     wire StallF, StallD, FlushE;
-    wire IsBranch_ID_Haz;
 
     mux2 #(32) muxisbranch(.in0(PCplus4_IF),
                     .in1(PCplus4addr_MEM),
@@ -92,17 +91,9 @@ module cpu
                   .id_rt(RT_ID),
                   .clk(clk),
                   .MemToReg_EX(MemToReg_EX),
-                  .MemToReg_MEM(MemToReg_MEM),
-                  .IsBranch_ID(IsBranch_ID),
-                  .RegWr_EX(RegWr_EX),
-                  .regAw_EX(regAw_EX),
-                  .regAw_MEM(regAw_MEM),
-                  .regDa_ID(regDa_ID),
-                  .regDb_ID(regDb_ID),
                   .StallF(StallF),
                   .StallD(StallD),
-                  .FlushE(FlushE),
-                  .IsBranch_ID_Haz(IsBranch_ID_Haz));
+                  .FlushE(FlushE));
 
     // IF/ID Register
     ifid ifidreg(.clk(clk),
@@ -155,7 +146,7 @@ module cpu
                     .out1(RegWr_ID_F),
                     .in2(MemWr_ID),
                     .out2(MemWr_ID_F),
-                    .in3(IsBranch_ID_Haz),
+                    .in3(IsBranch_ID),
                     .out3(IsBranch_ID_F),
                     .in4(IsJump_ID),
                     .out4(IsJump_ID_F),

@@ -1,4 +1,4 @@
-`include "piplinedcpu_hazards.v"
+`include "pipelinedcpu.v"
 
 //------------------------------------------------------------------------
 // Test bench for XOR SUB SLT sequence.
@@ -17,7 +17,7 @@ module cpu_test ();
     always #10 clk = !clk;
 
     // Instantiate CPU
-    cpu_h cpu(.clk(clk));
+    cpu cpu(.clk(clk));
 
     initial begin
 

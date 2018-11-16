@@ -1,9 +1,9 @@
-`include "backup.v"
+`include "pipelinedcpu.v"
 
 //------------------------------------------------------------------------
 // Test bench for FOWARDING test sequence
 // instructions were generated from fowarding_3.asm
-// This test bench test fowarding from Memeory and from WB as non fowarding operations. 
+// This test bench test fowarding from Memeory and from WB as non fowarding operations.
 //------------------------------------------------------------------------
 
 module cpu_test ();
